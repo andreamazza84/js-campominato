@@ -13,31 +13,46 @@
  */
 function checkDoubles(num, list) {
   for (var index = 0; index < list.length; index++) {
-    if (num === list[index]) { return true; }
+    if (num === list[index]) {
+      return true;
+    }
   }
   return false;
 }
 
 
 /** Restituisce 16 numeri casuali e diversi tra loro compresi tra 1 e 100
-*
+* @param = level: il valore in ingresso può essere da 0 (falice) a 2 (difficile)
 */
 var randomList = [];
-function random16(){
-  //Genera 16 numeri casuali
+function random16(level){
+  var randomNum = 0;
+  switch (level) {
+    case 0:
+    diffLevel = 100;
+    break;
+    case 1:
+    diffLevel = 80;
+    break;
+    case 2:
+    diffLevel = 50;
+    break;
+    default:
+    diffLevel = 100;
+  }
   for (var i = 0; i < 16; i++) {
-    var num = Math.floor(Math.random()*100) + 1; //numeri casuali da 1 a 100
+    randomNum = Math.floor(Math.random()*diffLevel) + 1;
     for (var index = 0; index < randomList.length; index++) {
-      if (num === randomList[index] && num < 100) {
-          randomList[index] = num + 1;
+      if (randomNum === randomList[index] && randomNum < 100) {
+          randomList[index] = randomNum + 1;
           index--; //doppio check
       }
-      else if (num === randomList[index] && num === 100) {
-          randomList[index] = num - 3;
+      else if (randomNum === randomList[index] && randomNum === 100) {
+          randomList[index] = randomNum - 3;
           index--; //doppio check
       }
     }
-    randomList[i] = num;
+    randomList[i] = randomNum;
   }
   return randomList;
 }
@@ -48,11 +63,15 @@ function random16(){
 
 var i, userNumber = 0;
 var userList = [];
-random16();
+var selectLevel = Number(prompt("Seleziona un livello di difficoltà [0, 1 o 2]"));
+random16(selectLevel);
 
-for (var i = 0; i < 10; i++) {
-  userNumber = Number(prompt("Inserisci un numero da 1 a 100"));
-  
+for (var i = 0; i < 5/*(diffLevel - 16))*/; i++) {
+  userNumber = Number(prompt("Inserisci un numero da 1 a " + diffLevel));
+  if (userNumber > diffLevel) {
+    alert("Inserisci un numero inferiore a " + diffLevel);
+    i--; //reitero il gioco nello stesso punto
+  }
   if (checkDoubles(userNumber, randomList)) {
     alert("Hai perso");
     break
@@ -62,6 +81,10 @@ for (var i = 0; i < 10; i++) {
     break
   }
   userList[i] = userNumber;
+}
+
+if(checkDoubles(userNumber, randomList) && checkDoubles(userNumber, userList)){
+  alert("Hai vinto!");
 }
 
 console.log("userNumber " + userNumber);
