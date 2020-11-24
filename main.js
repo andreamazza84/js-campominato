@@ -7,9 +7,13 @@
 // La partita termina quando il giocatore inserisce un numero “vietato” o raggiunge il numero massimo possibile di numeri consentiti.
 // Al termine della partita il software deve comunicare il punteggio, cioè il numero di volte che l’utente ha inserito un numero consentito.
 
+// ************************************************************************** //
+//FUNCTIONS
 
-/** Controlla che il numero num inserito nella lista sia diverso dai precedenti
- *
+/** Controlla che il numero num inserito nella lista list sia diverso dai precedenti
+ *  @param num numero di cui si vuole controllare la presenza nella lista
+ *  @param list lista di numeri interi di lunghezza generica
+ *  @result restituisce true se num è già presente nella lista
  */
 function checkNumber(num, list) {
   for (var i = 0; i < list.length; i++) {
@@ -21,11 +25,12 @@ function checkNumber(num, list) {
 }
 //Controllo
 
-/** Restituisce 16 numeri casuali e diversi tra loro compresi tra 1 e 50, 80, 100 in funzione del valore di level
+/** Restituisce 16 numeri casuali e diversi tra loro compresi tra 1 e 50, 1 e 80, o 1 e 100 in funzione del valore di level
 * @param = level: il valore in ingresso può essere 0 (=>100), 1(=>80) o 2 (=>50)
+* @result restituisce una lista di 16 numeri causali
 */
-var randomList = []; //output function: preferisco impostare questa come variabile globale
 function random16(level){
+  //BONUS
   switch (level) {
     case 0:
     diffLevel = 100;
@@ -39,8 +44,8 @@ function random16(level){
     default:
     diffLevel = 100;
   }
-
   var randomNum = 0;
+  var randomList = [];
   var i = 0;
   while(randomList.length < 16) {
     randomNum = Math.floor(Math.random()*diffLevel) + 1;
@@ -48,23 +53,24 @@ function random16(level){
       randomList.push(randomNum);
     }
   }
-  //Ordina la lista in ordine crescente (per semplificare il debug)
-  randomList = randomList.sort(function(a, b){return a-b});
   return randomList;
 }
 
+// /FUNCTIONS
 // ************************************************************************** //
 
 var i, userNumber = 0;
 var userList = [];
 var selectLevel = Number(prompt("Seleziona un livello di difficoltà [0, 1 o 2]"));
 var win = true;
-random16(selectLevel);
+//Ordina la lista in ordine crescente (per semplificare il debug)
+var randomList = random16(selectLevel).sort(function(a, b){return a-b});
 
 // Controllo
 console.log("randomList " + randomList);
+// /Controllo
 
-for (var i = 0; i < 3/*(diffLevel - 16))*/; i++) {
+for (var i = 0; i < (diffLevel - 16); i++) {
   userNumber = Number(prompt("Inserisci un numero da 1 a " + diffLevel));
 
   if (userNumber < 1 || userNumber > diffLevel) {
@@ -87,16 +93,13 @@ for (var i = 0; i < 3/*(diffLevel - 16))*/; i++) {
 // Controllo
 console.log("userNumber " + userNumber);
 console.log("userList " + userList);
+// /Controllo
 
 // Mostra punteggio
-//10   punti per risposta esatta level 0
-//12.5 punti ... level 1
-//20   punti ... level 2
-var userScore = 10 * userList.length * 100 / diffLevel;
 
 if (win) {
-  alert("Hai vinto! " + "Hai totalizzato " + userScore + " punti");
+  alert("Hai vinto! " + "Hai totalizzato " + userList.length + " punti");
 }
 else{
-  alert("Hai perso. " + "Hai totalizzato " + userScore + " punti");
+  alert("Hai perso. " + "Hai totalizzato " + userList.length + " punti");
 }
