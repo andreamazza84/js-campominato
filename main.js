@@ -8,25 +8,24 @@
 // Al termine della partita il software deve comunicare il punteggio, cioè il numero di volte che l’utente ha inserito un numero consentito.
 
 
-/** Controlla che i numeri presenti nella lista siano tutti diversi tra loro
+/** Controlla che il numero num inserito nella lista sia diverso dai precedenti
  *
  */
-function checkDoubles(num, list) {
-  for (var index = 0; index < list.length; index++) {
-    if (num === list[index]) {
+function checkNumber(num, list) {
+  for (var i = 0; i < list.length; i++) {
+    if (list[i] === num) {
       return true;
     }
   }
   return false;
 }
-
+//Controllo
 
 /** Restituisce 16 numeri casuali e diversi tra loro compresi tra 1 e 50, 80, 100 in funzione del valore di level
 * @param = level: il valore in ingresso può essere 0 (=>100), 1(=>80) o 2 (=>50)
 */
 var randomList = []; //output function: preferisco impostare questa come variabile globale
 function random16(level){
-  var randomNum = 0;
   switch (level) {
     case 0:
     diffLevel = 100;
@@ -40,20 +39,16 @@ function random16(level){
     default:
     diffLevel = 100;
   }
-  for (var i = 0; i < 16; i++) {
+
+  var randomNum = 0;
+  var i = 0;
+  while(randomList.length < 16) {
     randomNum = Math.floor(Math.random()*diffLevel) + 1;
-    for (var index = 0; index < randomList.length; index++) {
-      if (randomNum === randomList[index] && randomNum < 100) {
-          randomList[index] = randomNum + 2;
-          index--; //doppio check
-      }
-      else if (randomNum === randomList[index] && randomNum === 100) {
-          randomList[index] = randomNum - 3;
-          index--; //doppio check
-      }
+    if (checkNumber(randomNum, randomList) === false) {
+      randomList.push(randomNum);
     }
-    randomList[i] = randomNum;
   }
+  //Ordina la lista in ordine crescente (per semplificare il debug)
   randomList = randomList.sort(function(a, b){return a-b});
   return randomList;
 }
@@ -65,6 +60,7 @@ var userList = [];
 var selectLevel = Number(prompt("Seleziona un livello di difficoltà [0, 1 o 2]"));
 var win = true;
 random16(selectLevel);
+
 // Controllo
 console.log("randomList " + randomList);
 
@@ -76,11 +72,11 @@ for (var i = 0; i < 3/*(diffLevel - 16))*/; i++) {
     i--; //reitero il gioco nello stesso punto per evitare l'inserimento di valori non ammessi
   }
   else{
-    if (checkDoubles(userNumber, randomList)) {
+    if (checkNumber(userNumber, randomList)) {
       win = false;
       break
     }
-    else if (i > 0 && checkDoubles(userNumber, userList)) {
+    else if (i > 0 && checkNumber(userNumber, userList)) {
       win = false;
       break
     }
@@ -91,9 +87,6 @@ for (var i = 0; i < 3/*(diffLevel - 16))*/; i++) {
 // Controllo
 console.log("userNumber " + userNumber);
 console.log("userList " + userList);
-//console.log("checkDoubles(userNumber, userList) " + checkDoubles(userNumber, userList));
-//console.log("checkDoubles(userNumber, randomList) " + checkDoubles(userNumber, randomList));
-// /Controllo
 
 // Mostra punteggio
 //10   punti per risposta esatta level 0
