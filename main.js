@@ -23,13 +23,13 @@ function checkNumber(num, list) {
   }
   return false;
 }
-//Controllo
 
 /** Restituisce 16 numeri casuali e diversi tra loro compresi tra 1 e 50, 1 e 80, o 1 e 100 in funzione del valore di level
 * @param = level: il valore in ingresso può essere 0 (=>100), 1(=>80) o 2 (=>50)
 * @result restituisce una lista di 16 numeri causali
 */
 function random16(level){
+var diffLevel = 0;
   //BONUS
   switch (level) {
     case 0:
@@ -63,7 +63,7 @@ var userList = [];
 var selectLevel = Number(prompt("Seleziona un livello di difficoltà [0, 1 o 2]"));
 var win = true;
 //Ordina la lista in ordine crescente (per semplificare il debug)
-var randomList = random16(selectLevel).sort(function(a, b){return a-b});
+var randomList = random16(selectLevel);
 
 // Controllo
 console.log("randomList " + randomList);
