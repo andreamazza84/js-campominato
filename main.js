@@ -46,7 +46,6 @@ function random16(level){
   }
   var randomNum = 0;
   var randomList = [];
-  var i = 0;
   while(randomList.length < 16) {
     randomNum = Math.floor(Math.random()*diffLevel) + 1;
     if (checkNumber(randomNum, randomList) === false) {
@@ -59,7 +58,7 @@ function random16(level){
 // /FUNCTIONS
 // ************************************************************************** //
 
-var i, userNumber = 0;
+var userNumber = 0;
 var userList = [];
 var selectLevel = Number(prompt("Seleziona un livello di difficoltà [0, 1 o 2]"));
 var win = true;
@@ -70,7 +69,7 @@ var randomList = random16(selectLevel).sort(function(a, b){return a-b});
 console.log("randomList " + randomList);
 // /Controllo
 
-for (var i = 0; i < (diffLevel - 16); i++) {
+for (var i = 0; i < (diffLevel - randomList.length); i++) {
   userNumber = Number(prompt("Inserisci un numero da 1 a " + diffLevel));
 
   if (userNumber < 1 || userNumber > diffLevel) {
@@ -80,11 +79,11 @@ for (var i = 0; i < (diffLevel - 16); i++) {
   else{
     if (checkNumber(userNumber, randomList)) {
       win = false;
-      break
+      break;
     }
     else if (i > 0 && checkNumber(userNumber, userList)) {
       win = false;
-      break
+      break;
     }
   }
   userList[i] = userNumber;
@@ -96,7 +95,6 @@ console.log("userList " + userList);
 // /Controllo
 
 // Mostra punteggio
-
 if (win) {
   alert("Hai vinto! " + "Hai totalizzato " + userList.length + " punti");
 }
